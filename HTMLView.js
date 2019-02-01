@@ -55,8 +55,8 @@ class HtmlView extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.value !== nextProps.value || this.props.stylesheet !== nextProps.stylesheet || this.props.textComponentProps !== nextProps.textComponentProps) {
-      this.startHtmlRender(nextProps.value, nextProps.stylesheet, nextProps.textComponentProps);
+    if (this.props.value !== nextProps.value || this.props.stylesheet !== nextProps.stylesheet || this.props.textComponentProps !== nextProps.textComponentProps || this.props.renderNode !== nextProps.renderNode) {
+      this.startHtmlRender(nextProps.value, nextProps.stylesheet, nextProps.textComponentProps, nextProps.renderNode);
     }
   }
 
@@ -64,7 +64,7 @@ class HtmlView extends PureComponent {
     this.mounted = false;
   }
 
-  startHtmlRender(value, style, textComponentProps) {
+  startHtmlRender(value, style, textComponentProps, customRenderNode) {
     const {
       addLineBreaks,
       onLinkPress,
@@ -85,6 +85,10 @@ class HtmlView extends PureComponent {
       styles: {...baseStyles, ...stylesheet, ...style},
       customRenderer: renderNode,
     };
+
+    if (customRenderNode) {
+      opts.customRenderer = customRenderNode;
+    }
 
     htmlToElementOptKeys.forEach(key => {
       if (typeof this.props[key] !== 'undefined') {
